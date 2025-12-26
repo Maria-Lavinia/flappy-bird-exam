@@ -6,6 +6,9 @@ public class BirdScript : MonoBehaviour
     public float flapStrength;
     public LogicScript logic;
     public bool isAlive = true;
+
+  public CameraShake cameraShake;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,6 +26,10 @@ public class BirdScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+         if (cameraShake != null)
+        {
+            cameraShake.Shake(0.3f, 0.3f);
+        }
         logic.gameOver();
         isAlive = false;
     }
