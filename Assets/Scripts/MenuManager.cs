@@ -12,10 +12,15 @@ public class MenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("FlappyTimeAttack");
     }
+     public void GoToMainMenu()
+    {
+        Time.timeScale = 1f; // important if TimeAttack paused the game
+        SceneManager.LoadScene("MainMenu");
+    }
 
     public void QuitGame()
     {
-        Application.Quit();
-        // Won't do anything in the editor, but works in a build
+        Debug.Log("Exit button clicked");
+        Application.Quit(); // Won't do anything in the editor, but works in a build
     }
 }

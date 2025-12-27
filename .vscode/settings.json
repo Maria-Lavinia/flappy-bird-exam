@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Flappy bird.sln"
+    "dotnet.defaultSolution": "Flappy bird.slnx"
 }
