@@ -14,7 +14,6 @@ public class MenuManager : MonoBehaviour
     }
      public void GoToMainMenu()
     {
-        Time.timeScale = 1f; // important if TimeAttack paused the game
         SceneManager.LoadScene("MainMenu");
     }
 
