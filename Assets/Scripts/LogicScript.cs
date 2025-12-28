@@ -50,7 +50,7 @@ public class LogicScript : MonoBehaviour
     public void DoubleScoreNow()
     {
         if (ended) return;
-
+        FindObjectOfType<SoundManager>()?.PlayStar();
         playerScore *= 2;
         UpdateScoreUI();
         CheckAndSaveBest();
@@ -73,7 +73,7 @@ public class LogicScript : MonoBehaviour
     public void LoseAfterDelay(float delaySeconds)
     {
         if (ended) return;
-
+        FindObjectOfType<SoundManager>()?.PlayLose();
         if (endRoutine != null) StopCoroutine(endRoutine);
         endRoutine = StartCoroutine(EndAfterDelay(delaySeconds, "You Lose!"));
     }
@@ -81,6 +81,7 @@ public class LogicScript : MonoBehaviour
     public void Win()
     {
         if (ended) return;
+        FindObjectOfType<SoundManager>()?.PlayWin();
 
         ended = true;
 
