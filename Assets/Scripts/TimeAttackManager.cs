@@ -5,9 +5,8 @@ public class TimeAttackManager : MonoBehaviour
 {
     [Header("References")]
     public LogicScript logic;
-    public Text timerText;      
-    public Text goalText;       
-    public Text resultText;  
+    public Text timerText;
+    public Text goalText;
 
     [Header("Time Attack Settings")]
     public bool useTimeAttack = true;
@@ -32,26 +31,27 @@ public class TimeAttackManager : MonoBehaviour
     void Update()
     {
         if (!useTimeAttack || hasEnded) return;
+        if (logic == null) return;
+        if (logic.HasEnded()) return;
+
+        // Win early if target score reached
+        if (logic.playerScore >= targetScore)
+        {
+            hasEnded = true;
+            logic.Win();
+            return;
+        }
 
         timer -= Time.deltaTime;
         if (timer < 0f) timer = 0f;
 
         UpdateTimerUI();
 
-        // Win early if target score reached
-        if (logic != null && logic.playerScore >= targetScore)
-        {
-            Win();
-            return;
-        }
-
         // Time's up
         if (timer <= 0f)
         {
-            if (logic != null && logic.playerScore >= targetScore)
-                Win();
-            else
-                TimeUpLose();
+            hasEnded = true;
+            logic.LoseAfterDelay(0f);
         }
     }
 
@@ -59,35 +59,5 @@ public class TimeAttackManager : MonoBehaviour
     {
         if (timerText != null)
             timerText.text = Mathf.Ceil(timer).ToString();
-    }
-
-    private void Win()
-    {
-        if (hasEnded) return;
-        hasEnded = true;
-
-        if (logic != null && logic.gameOverScreen != null)
-            logic.gameOverScreen.SetActive(true);
-
-        if (resultText != null)
-            resultText.text = "You Win!";
-
-        // Optional: freeze
-        // Time.timeScale = 0f;
-    }
-
-    private void TimeUpLose()
-    {
-        if (hasEnded) return;
-        hasEnded = true;
-
-        if (logic != null && logic.gameOverScreen != null)
-            logic.gameOverScreen.SetActive(true);
-
-        if (resultText != null)
-            resultText.text = "Time's Up!\nYou Lose!";
-
-        // Optional: freeze
-        // Time.timeScale = 0f;
     }
 }

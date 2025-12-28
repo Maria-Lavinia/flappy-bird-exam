@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LogicScript : MonoBehaviour
 {
@@ -12,29 +13,44 @@ public class LogicScript : MonoBehaviour
     public Text highScoreText;
     private int bestScore = 0;
 
-    [Header("Game Over UI")]
+  [Header("Game Over UI")]
     public GameObject gameOverScreen;
+    public Text resultText;
 
     [Header("Bird (for color change)")]
     public HighScoreColorChanger birdHighScoreColor;
 
+    private bool ended = false;
+    private Coroutine endRoutine;
+
     void Start()
     {
+        Time.timeScale = 1f;
+
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         UpdateScoreUI();
         UpdateHighScoreUI();
+
+        if (gameOverScreen != null)
+            gameOverScreen.SetActive(false);
     }
+
+    public bool HasEnded() => ended;
 
     public void addScore(int points)
     {
+        if (ended) return;
+
         playerScore += points;
         UpdateScoreUI();
         CheckAndSaveBest();
     }
 
-    // ⭐ Call this when a star is collected
+    // Call this when a star is collected
     public void DoubleScoreNow()
     {
+        if (ended) return;
+
         playerScore *= 2;
         UpdateScoreUI();
         CheckAndSaveBest();
@@ -54,17 +70,51 @@ public class LogicScript : MonoBehaviour
         }
     }
 
+    public void LoseAfterDelay(float delaySeconds)
+    {
+        if (ended) return;
+
+        if (endRoutine != null) StopCoroutine(endRoutine);
+        endRoutine = StartCoroutine(EndAfterDelay(delaySeconds, "You Lose!"));
+    }
+
+    public void Win()
+    {
+        if (ended) return;
+
+        ended = true;
+
+        if (gameOverScreen != null)
+            gameOverScreen.SetActive(true);
+
+        if (resultText != null)
+            resultText.text = "You Win!";
+
+        Time.timeScale = 0f;
+    }
+
+    private IEnumerator EndAfterDelay(float delaySeconds, string message)
+    {
+        ended = true;
+
+        if (delaySeconds > 0f)
+            yield return new WaitForSecondsRealtime(delaySeconds);
+
+        if (gameOverScreen != null)
+            gameOverScreen.SetActive(true);
+
+        if (resultText != null)
+            resultText.text = message;
+
+        Time.timeScale = 0f;
+    }
+
     public void restartGame()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void gameOver()
-    {
-        if (gameOverScreen != null)
-            gameOverScreen.SetActive(true);
-    }
 
     private void UpdateScoreUI()
     {

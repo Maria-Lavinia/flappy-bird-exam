@@ -11,7 +11,7 @@ public class PipeSpawnScript : MonoBehaviour
     public GameObject starPrefab;
 
     [Range(0f, 1f)]
-    public float starSpawnChance = 0.3f; // 30% chance each pipe spawn
+    public float starSpawnChance = 0.5f; // 50% chance each pipe spawn
 
     public float starYOffsetRange = 2f;  // random Y inside the gap (tune this)
 
@@ -42,7 +42,7 @@ public class PipeSpawnScript : MonoBehaviour
         Vector3 pipePos = new Vector3(transform.position.x, Random.Range(lowestPoint, highestPoint), 0);
         GameObject newPipe = Instantiate(pipe, pipePos, transform.rotation);
 
-        // ✅ Randomly spawn a star
+        // Randomly spawn a star
         if (starPrefab != null && Random.value < starSpawnChance)
         {
             Vector3 starPos = pipePos + new Vector3(0f, Random.Range(-starYOffsetRange, starYOffsetRange), 0f);
