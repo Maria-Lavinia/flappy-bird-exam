@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    // Singleton instance for global access
     public static SoundManager Instance;
 
     [Header("Sources")]
@@ -15,6 +16,7 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
+        // Ensure only one instance exists (singleton pattern)
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -22,6 +24,7 @@ public class SoundManager : MonoBehaviour
         }
 
         Instance = this;
+        // Persist this object across scene loads
         DontDestroyOnLoad(gameObject);
 
         // Start music once
@@ -31,18 +34,21 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    // Play the win sound effect
     public void PlayWin()
     {
         if (winClip != null)
             sfxSource.PlayOneShot(winClip);
     }
 
+    // Play the lose sound effect
     public void PlayLose()
     {
         if (loseClip != null)
             sfxSource.PlayOneShot(loseClip);
     }
 
+    // Play the star collection sound effect
     public void PlayStar()
     {
         if (starClip != null)

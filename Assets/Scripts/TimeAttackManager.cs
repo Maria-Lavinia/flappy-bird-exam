@@ -20,10 +20,11 @@ public class TimeAttackManager : MonoBehaviour
     {
         if (!useTimeAttack) return;
 
+        // Initialize the countdown timer
         timer = timeLimit;
 
         if (goalText != null)
-            goalText.text = "Get " + targetScore + " points in " + timeLimit.ToString("0") + "s";
+            goalText.text = "Get " + targetScore + " points";
 
         UpdateTimerUI();
     }
@@ -42,6 +43,7 @@ public class TimeAttackManager : MonoBehaviour
             return;
         }
 
+        // Decrease the timer each frame
         timer -= Time.deltaTime;
         if (timer < 0f) timer = 0f;
 

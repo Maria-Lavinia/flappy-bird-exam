@@ -20,6 +20,6 @@ public class PipeMiddleScript : MonoBehaviour
     {
       if (collision.CompareTag("Player"))
     {
-        logic.addScore(1);
+        logic.AddScore(1);
     }
 }}

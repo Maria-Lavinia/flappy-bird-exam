@@ -13,7 +13,7 @@ public class LogicScript : MonoBehaviour
     public Text highScoreText;
     private int bestScore = 0;
 
-  [Header("Game Over UI")]
+    [Header("Game Over UI")]
     public GameObject gameOverScreen;
     public Text resultText;
 
@@ -25,20 +25,24 @@ public class LogicScript : MonoBehaviour
 
     void Start()
     {
+        // Reset time scale to normal
         Time.timeScale = 1f;
 
+        // Load the best score from PlayerPrefs
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         UpdateScoreUI();
         UpdateHighScoreUI();
 
-        if (gameOverScreen != null)
+        // Hide the game over screen at start
+         if (gameOverScreen != null)
             gameOverScreen.SetActive(false);
     }
 
     public bool HasEnded() => ended;
 
-    public void addScore(int points)
+    public void AddScore(int points)
     {
+        // Don't add score if game has ended
         if (ended) return;
 
         playerScore += points;
@@ -49,8 +53,13 @@ public class LogicScript : MonoBehaviour
     // Call this when a star is collected
     public void DoubleScoreNow()
     {
+        // Don't double score if game has ended
         if (ended) return;
+        
+        // Play star sound effect
         FindObjectOfType<SoundManager>()?.PlayStar();
+        
+        // Double the current score
         playerScore *= 2;
         UpdateScoreUI();
         CheckAndSaveBest();
@@ -58,13 +67,16 @@ public class LogicScript : MonoBehaviour
 
     private void CheckAndSaveBest()
     {
+        // Check if current score is higher than best score
         if (playerScore > bestScore)
         {
+            // Update and save the new best score
             bestScore = playerScore;
             PlayerPrefs.SetInt("BestScore", bestScore);
             PlayerPrefs.Save();
             UpdateHighScoreUI();
 
+            // Notify bird color changer of new high score
             if (birdHighScoreColor != null)
                 birdHighScoreColor.OnScoreChanged(playerScore);
         }
@@ -72,60 +84,79 @@ public class LogicScript : MonoBehaviour
 
     public void LoseAfterDelay(float delaySeconds)
     {
+        // Don't trigger lose if game has already ended
         if (ended) return;
+        
+        // Play lose sound effect
         FindObjectOfType<SoundManager>()?.PlayLose();
+        
+        // Stop any existing end routine and start a new one
         if (endRoutine != null) StopCoroutine(endRoutine);
         endRoutine = StartCoroutine(EndAfterDelay(delaySeconds, "You Lose!"));
     }
 
     public void Win()
     {
+        // Don't trigger win if game has already ended
         if (ended) return;
+        
+        // Play win sound effect
         FindObjectOfType<SoundManager>()?.PlayWin();
 
+        // Mark game as ended
         ended = true;
 
+        // Show game over screen with win message
         if (gameOverScreen != null)
             gameOverScreen.SetActive(true);
 
         if (resultText != null)
             resultText.text = "You Win!";
 
+        // Pause the game
         Time.timeScale = 0f;
     }
 
     private IEnumerator EndAfterDelay(float delaySeconds, string message)
     {
+        // Mark game as ended immediately
         ended = true;
 
+        // Wait for the specified delay (using realtime to work with timeScale)
         if (delaySeconds > 0f)
             yield return new WaitForSecondsRealtime(delaySeconds);
 
+        // Show game over screen with the provided message
         if (gameOverScreen != null)
             gameOverScreen.SetActive(true);
 
         if (resultText != null)
             resultText.text = message;
 
+        // Pause the game
         Time.timeScale = 0f;
     }
 
-    public void restartGame()
+    public void RestartGame()
     {
+        // Resume time scale
         Time.timeScale = 1f;
+        
+        // Reload the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-
     private void UpdateScoreUI()
     {
-        if (scoreText != null)
+        // Update score text display
+         if (scoreText != null)
             scoreText.text = playerScore.ToString();
     }
 
     private void UpdateHighScoreUI()
     {
-        if (highScoreText != null)
+        // Update high score text display
+           if (highScoreText != null)
             highScoreText.text = "Best: " + bestScore.ToString();
     }
 }

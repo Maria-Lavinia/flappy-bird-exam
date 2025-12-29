@@ -17,34 +17,38 @@ public class PipeSpawnScript : MonoBehaviour
 
     void Start()
     {
-        spawnPipe();
+        SpawnPipe();
     }
 
     void Update()
     {
+        // Increment timer until spawn rate is reached
         if (timer < spawnRate)
         {
             timer += Time.deltaTime;
         }
         else
         {
-            spawnPipe();
+            // Spawn a new pipe and reset timer
+            SpawnPipe();
             timer = 0;
         }
     }
 
-    void spawnPipe()
+    void SpawnPipe()
     {
+        // Calculate random spawn height within offset range
         float lowestPoint = transform.position.y - heightOffset;
         float highestPoint = transform.position.y + heightOffset;
 
-        // Spawn the pipe
+        // Spawn the pipe at random height
         Vector3 pipePos = new Vector3(transform.position.x, Random.Range(lowestPoint, highestPoint), 0);
         GameObject newPipe = Instantiate(pipe, pipePos, transform.rotation);
 
-        // Randomly spawn a star
+        // Randomly spawn a star based on spawn chance
         if (starPrefab != null && Random.value < starSpawnChance)
         {
+            // Position star with slight Y offset from pipe
             Vector3 starPos = pipePos + new Vector3(0f, Random.Range(-starYOffsetRange, starYOffsetRange), 0f);
             GameObject star = Instantiate(starPrefab, starPos, Quaternion.identity);
 
