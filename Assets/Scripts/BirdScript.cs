@@ -14,12 +14,26 @@ public class BirdScript : MonoBehaviour
     {
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
     }
+    public void Die()
+    {
+        if (!isAlive) return; // prevent double-trigger
+        isAlive = false;
+
+        if (cameraShake != null)
+            cameraShake.Shake(0.3f, 0.3f);
+
+        logic.LoseAfterDelay(1f);
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isAlive)
         {
             myRigidBody.linearVelocity = Vector2.up * flapStrength; // represents 0,1, goes up
+        }
+        if (isAlive && transform.position.y < -10f)
+        {
+            Die();
         }
     }
 
@@ -31,7 +45,7 @@ public class BirdScript : MonoBehaviour
         if (cameraShake != null)
             cameraShake.Shake(0.3f, 0.3f);
 
-        if (logic != null)
+        if (logic !=     null)
             logic.LoseAfterDelay(1f);
     }
 }
