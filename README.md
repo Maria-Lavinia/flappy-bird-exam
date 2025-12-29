@@ -1,7 +1,16 @@
 # Game Overview
+**Flop-a-Bird** - A Unity recreation of the classic mobile game "Flappy Bird" with enhanced mechanics.
+
 Fly the bird through an endless series of pipes by clicking the space bar to flap and stay in the air. Avoid collisions with pipes and try to achieve the highest score possible!
 
-## Game Modes
+## Core Mechanics
+
+- Gravity & Physics: The bird constantly falls due to gravity and must be kept 'alive' through player input
+- Collision Detection: Contact with pipes results in game over
+- Procedural Generation: Pipes spawn continuously with randomized gap positions
+- Score System: Points are awarded for successfully passing through pipe gaps + star collectibles which double your score
+
+### Game Modes
 
 1. Classic Mode
 The traditional endless Flappy Bird experience where you aim to pass through as many pipes as possible. The game continues until you collide with a pipe.
@@ -14,7 +23,7 @@ A race against the clock! You have 30 seconds to collect 10 points. This mode ad
   - FlappyClassic - Traditional endless mode
   - FlappyTimeAttack - Timed challenge mode
 
-### Most Notable Features
+#### Most Notable Features
 
  1. Sound System with Singleton Pattern
 - Complete audio management system with background music and sound effects
@@ -45,7 +54,7 @@ A race against the clock! You have 30 seconds to collect 10 points. This mode ad
 - Time Attack mode introduces win/lose conditions beyond simple survival
 - Modular design allows easy addition of more modes
 
-#### Controls
+##### Controls
 
 - Space Bar - fly upwards
 
@@ -68,7 +77,6 @@ A race against the clock! You have 30 seconds to collect 10 points. This mode ad
 
 4. UI
 - `MenuManager.cs` - Scene transitions and menu navigation
-
 
 # How to Run
 
