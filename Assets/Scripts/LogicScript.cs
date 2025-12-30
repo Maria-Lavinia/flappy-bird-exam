@@ -57,7 +57,8 @@ public class LogicScript : MonoBehaviour
         if (ended) return;
         
         // Play star sound effect
-        FindObjectOfType<SoundManager>()?.PlayStar();
+        if(FindObjectOfType<SoundManager>() != null)
+            FindObjectOfType<SoundManager>().PlayStar();
         
         // Double the current score
         playerScore *= 2;
@@ -88,7 +89,8 @@ public class LogicScript : MonoBehaviour
         if (ended) return;
         
         // Play lose sound effect
-        FindObjectOfType<SoundManager>()?.PlayLose();
+        if(FindObjectOfType<SoundManager>() != null)
+            FindObjectOfType<SoundManager>().PlayLose();
         
         // Stop any existing end routine and start a new one
         if (endRoutine != null) StopCoroutine(endRoutine);
@@ -101,7 +103,8 @@ public class LogicScript : MonoBehaviour
         if (ended) return;
         
         // Play win sound effect
-        FindObjectOfType<SoundManager>()?.PlayWin();
+        if(FindObjectOfType<SoundManager>() != null)
+            FindObjectOfType<SoundManager>().PlayWin();
 
         // Mark game as ended
         ended = true;
