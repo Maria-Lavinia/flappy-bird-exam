@@ -13,7 +13,7 @@ public class PipeSpawnScript : MonoBehaviour
     [Range(0f, 1f)]
     public float starSpawnChance = 0.5f; // 50% chance each pipe spawn
 
-    public float starYOffsetRange = 2f;  // random Y inside the gap (tune this)
+    public float starYOffsetRange = 2f;  // random Y inside the gap
 
     void Start()
     {
